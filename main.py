@@ -2,7 +2,7 @@
 # take in voice command
 # proceed with the action
 # 1. function for a timer
-# 2. open music (spotify, Youtube music)
+# 2. open music (spotify)
 # 3. open google (search)
 # 4. open yt
 # 5. check palindrome
@@ -13,6 +13,8 @@ import pyttsx3
 import pyaudio
 import speech_recognition as sr
 import webbrowser
+import urllib
+import os
 
 # initialize pyttsx3
 engine = pyttsx3.init("sapi5")
@@ -66,6 +68,7 @@ def check_palindrome(word):
 # Mini project #3
 # convert speech to text and return text
 def speak(audio):
+    # just takes in audio
     engine.say(audio)
     engine.runAndWait()
 
@@ -81,9 +84,13 @@ def speech_to_text():
     try:
         query = r.recognize_google(audio)
         print(query)
+        return query
+        # speak(query)
     except:
         print("error")
+        return None
         speak("Error try again")
+
 # speech_to_text()
 
 # mini project #4
@@ -91,4 +98,39 @@ def speech_to_text():
 def web(website):
     # go to website
     webbrowser.open(website)
-web("google.com")
+# web("youtube.com")
+
+def google_search():
+    url = "google.com/search?q="
+    speak("Would you like to google search anything, please say yes or no")
+    answer = speech_to_text()
+    if answer == "yes":
+        speak("What would you like to search")
+        search = speech_to_text()
+        search = search.replace(" ", "+")
+        final_url = url + search
+        webbrowser.open(final_url)
+    else:
+        webbrowser.open("google.com")
+
+
+# google_search()
+
+# Mini project #5
+# access/open a local application
+def open_local_applications(application):
+    if application == "Spotify":
+        speak("Opening spotify!")
+    # loc = location
+        loc = "C:/Users/xiaop/AppData/Roaming/Spotify/Spotify.exe"
+    elif application == "Zoom":
+        speak("opening zoom!")
+        loc = "C:/Users/xiaop/AppData/Roaming/Zoom/bin/Zoom.exe"
+    os.startfile(loc)
+# open_local_applications("Zoom")
+
+# integration of functions
+# 1. listen for "python" and activates listening for commmands
+# 2. speak and prompt what the user wants to do
+# 3. take in speech command and proceed with execution accordingly
+# 4.
