@@ -23,21 +23,25 @@ engine.setProperty('voice', voices[1].id)
     # one for female, zero for male voice
 # mini project #1: build a timer
 
-
-
+dict_num = {"one":1, "two":2, "three":3, "four":4, "five":5, "six":6, "seven":7, "eight":8, "nine":9, "ten": 10}
 def countdown_timer(t):
     # initialize and load music file
     pygame.mixer.init()
     pygame.mixer.music.load("ring tone.mp3")
     # timer starts here
-    while t > 0:
-        mins, secs = divmod(t, 60) # divmod divides things by 60
+
+    if t in dict_num: # shortened != none
+        int_t = dict_num[t]
+    else:
+        int_t = int(t)
+    while int_t > 0:
+        mins, secs = divmod(int_t, 60) # divmod divides things by 60
         timer = '{:02d}:{:02d}'.format(mins, secs) # format
         #             5:45
         print(timer)
         time.sleep(1)
         # waits one second to make it be like one second passed
-        t -= 1
+        int_t -= 1
     pygame.mixer.music.play()
     while pygame.mixer.music.get_busy():
         pygame.time.Clock().tick(100)
@@ -84,7 +88,7 @@ def speech_to_text():
 
     try:
         query = r.recognize_google(audio)
-        print(query)
+        print("You said " + query)
         return query
         # speak(query)
     except:
@@ -147,9 +151,10 @@ def main_code():
             speak("What do you want to do?")
             action = speech_to_text()
             if action == "countdown timer":
-                speak("how long do you want this timer to go for? In seconds")
-                seconds = int(speech_to_text())
+                speak("how long do you want this timer to go for in seconds")
+                seconds = speech_to_text()
                 countdown_timer(seconds)
+
             elif action == "check palindrome":
                 speak("What is the word you wish to check?")
                 input = speech_to_text()
@@ -158,7 +163,7 @@ def main_code():
                 web("youtube.com")
             elif action == "open Wikipedia":
                 web("wikipedia.com")
-            elif action == "open Canvas":
+            elif action == "open canvas":
                 web("sandiegounified.instructure.com")
             elif action == "open Google":
                 google_search()
@@ -168,5 +173,6 @@ def main_code():
                 open_local_applications("Zoom")
             elif action == "stop":
                 activated = False
-# main_code()
+                answer = None
+main_code()
 
